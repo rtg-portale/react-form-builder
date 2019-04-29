@@ -1,8 +1,9 @@
 /**
-  * <Preview />
-  */
+ * <Preview />
+ */
 
 import React from 'react';
+import translate from 'counterpart';
 import update from 'immutability-helper';
 import store from './stores/store';
 import FormElementsEdit from './form-elements-edit';
@@ -40,14 +41,14 @@ export default class Preview extends React.Component {
     document.removeEventListener('mousedown', this.editModeOff);
   }
 
-  editModeOff = (e) => {
+  editModeOff = e => {
     if (this.editForm.current && !this.editForm.current.contains(e.target)) {
       this.props.manualEditModeOff();
     }
-  }
+  };
 
   _setValue(text) {
-    return text.replace(/[^A-Z0-9]+/ig, '_').toLowerCase();
+    return text.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();
   }
 
   updateElement(element) {
@@ -70,7 +71,7 @@ export default class Preview extends React.Component {
   _onChange(data) {
     const answer_data = {};
 
-    data.forEach((item) => {
+    data.forEach(item => {
       if (item && item.readOnly && this.props.variables[item.variableKey]) {
         answer_data[item.field_name] = this.props.variables[item.variableKey];
       }
@@ -115,27 +116,62 @@ export default class Preview extends React.Component {
 
   getElement(item, index) {
     const SortableFormElement = SortableFormElements[item.element];
-    return <SortableFormElement id={item.id} index={index} moveCard={this.moveCard} insertCard={this.insertCard} mutable={false} parent={this.props.parent} editModeOn={this.props.editModeOn} isDraggable={true} key={item.id} sortData={item.id} data={item} _onDestroy={this._onDestroy} />;
+    return (
+      <SortableFormElement
+        id={item.id}
+        index={index}
+        moveCard={this.moveCard}
+        insertCard={this.insertCard}
+        mutable={false}
+        parent={this.props.parent}
+        editModeOn={this.props.editModeOn}
+        isDraggable={true}
+        key={item.id}
+        sortData={item.id}
+        data={item}
+        _onDestroy={this._onDestroy}
+      />
+    );
   }
 
   render() {
     let classes = this.props.className;
-    if (this.props.editMode) { classes += ' is-editing'; }
+    if (this.props.editMode) {
+      classes += ' is-editing';
+    }
     const data = this.state.data.filter(x => !!x);
     const items = data.map((item, index) => this.getElement(item, index));
     return (
       <div className={classes}>
         <div className="edit-form" ref={this.editForm}>
-          { this.props.editElement !== null &&
-            <FormElementsEdit showCorrectColumn={this.props.showCorrectColumn} files={this.props.files} manualEditModeOff={this.props.manualEditModeOff} preview={this} element={this.props.editElement} updateElement={this.updateElement} />
-          }
+          {this.props.editElement !== null && (
+            <FormElementsEdit
+              showCorrectColumn={this.props.showCorrectColumn}
+              files={this.props.files}
+              manualEditModeOff={this.props.manualEditModeOff}
+              preview={this}
+              element={this.props.editElement}
+              updateElement={this.updateElement}
+            />
+          )}
         </div>
         <div className="Sortable">{items}</div>
-         <PlaceHolder id="form-place-holder" show={items.length === 0} index={items.length} moveCard={this.cardPlaceHolder} insertCard={this.insertCard}/>
+        <PlaceHolder
+          id="form-place-holder"
+          text={translate('form.placeholder')}
+          show={items.length === 0}
+          index={items.length}
+          moveCard={this.cardPlaceHolder}
+          insertCard={this.insertCard}
+        />
       </div>
     );
   }
 }
 Preview.defaultProps = {
-  showCorrectColumn: false, files: [], editMode: false, editElement: null, className: 'react-form-builder-preview pull-left',
+  showCorrectColumn: false,
+  files: [],
+  editMode: false,
+  editElement: null,
+  className: 'react-form-builder-preview pull-left',
 };

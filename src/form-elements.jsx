@@ -1,12 +1,14 @@
 import React from 'react';
 import Select from 'react-select';
 import xss from 'xss';
-import moment from 'moment';
-import SignaturePad from 'react-signature-canvas';
-import ReactBootstrapSlider from 'react-bootstrap-slider';
+import translate from 'counterpart';
+
 import ReactDatePicker from 'react-datepicker';
+import SignatureCanvas from 'react-signature-canvas';
+import ReactBootstrapSlider from 'react-bootstrap-slider';
 import StarRating from './star-rating';
 import HeaderBar from './header-bar';
+import { LocaleContext, formatDate } from './localeContext';
 
 const FormElements = {};
 const myxss = new xss.FilterXSS({
@@ -28,28 +30,34 @@ const myxss = new xss.FilterXSS({
   },
 });
 
-const ComponentLabel = (props) => {
-  const hasRequiredLabel = (props.data.hasOwnProperty('required') && props.data.required === true && !props.read_only);
+const ComponentLabel = props => {
+  const hasRequiredLabel = props.data.hasOwnProperty('required') && props.data.required === true && !props.read_only;
 
   return (
     <label className={props.className || ''}>
-      <span dangerouslySetInnerHTML={{ __html: myxss.process(props.data.label) }}/>
-      {hasRequiredLabel && <span className="label-required label label-danger">Required</span>}
+      <span dangerouslySetInnerHTML={{ __html: myxss.process(props.data.label) }} />
+      {hasRequiredLabel && <span className="label-required label label-danger">{translate('form.required')}</span>}
     </label>
   );
 };
 
-const ComponentHeader = (props) => {
+const ComponentHeader = props => {
   if (props.mutable) {
     return null;
   }
   return (
     <div>
-    { props.data.pageBreakBefore &&
-      <div className="preview-page-break">Page Break</div>
-    }
-    <HeaderBar parent={props.parent} editModeOn={props.editModeOn} data={props.data} onDestroy={props._onDestroy} onEdit={props.onEdit} static={props.data.static} required={props.data.required} />
-  </div>
+      {props.data.pageBreakBefore && <div className="preview-page-break">{translate('form.page-break')}</div>}
+      <HeaderBar
+        parent={props.parent}
+        editModeOn={props.editModeOn}
+        data={props.data}
+        onDestroy={props._onDestroy}
+        onEdit={props.onEdit}
+        static={props.data.static}
+        required={props.data.required}
+      />
+    </div>
   );
 };
 
@@ -57,11 +65,17 @@ class Header extends React.Component {
   render() {
     // const headerClasses = `dynamic-input ${this.props.data.element}-input`;
     let classNames = 'static';
-    if (this.props.data.bold) { classNames += ' bold'; }
-    if (this.props.data.italic) { classNames += ' italic'; }
+    if (this.props.data.bold) {
+      classNames += ' bold';
+    }
+    if (this.props.data.italic) {
+      classNames += ' italic';
+    }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -75,11 +89,17 @@ class Header extends React.Component {
 class Paragraph extends React.Component {
   render() {
     let classNames = 'static';
-    if (this.props.data.bold) { classNames += ' bold'; }
-    if (this.props.data.italic) { classNames += ' italic'; }
+    if (this.props.data.bold) {
+      classNames += ' bold';
+    }
+    if (this.props.data.italic) {
+      classNames += ' italic';
+    }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -93,11 +113,17 @@ class Paragraph extends React.Component {
 class Label extends React.Component {
   render() {
     let classNames = 'static';
-    if (this.props.data.bold) { classNames += ' bold'; }
-    if (this.props.data.italic) { classNames += ' italic'; }
+    if (this.props.data.bold) {
+      classNames += ' bold';
+    }
+    if (this.props.data.italic) {
+      classNames += ' italic';
+    }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -111,7 +137,9 @@ class Label extends React.Component {
 class LineBreak extends React.Component {
   render() {
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -139,7 +167,9 @@ class TextInput extends React.Component {
     }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     if (this.props.read_only) {
       props.disabled = 'disabled';
@@ -179,7 +209,9 @@ class NumberInput extends React.Component {
     }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -214,7 +246,9 @@ class TextArea extends React.Component {
     }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -229,6 +263,8 @@ class TextArea extends React.Component {
 }
 
 class DatePicker extends React.Component {
+  static contextType = LocaleContext;
+
   constructor(props) {
     super(props);
     this.inputField = React.createRef();
@@ -236,29 +272,29 @@ class DatePicker extends React.Component {
     let internalValue;
 
     if (props.data.defaultToday && (props.defaultValue === '' || props.defaultValue === undefined)) {
-      value = moment().format('MM/DD/YYYY');
-      internalValue = moment();
+      value = this.context.moment().format(translate('date.full'));
+      internalValue = this.context.moment();
     } else {
       value = props.defaultValue;
 
       if (props.defaultValue !== '' && props.defaultValue !== undefined) {
-        internalValue = moment(value, 'MM/DD/YYYY');
+        internalValue = this.context.moment(value, translate('date.full'));
       }
     }
 
     this.state = {
       value,
       internalValue,
-      placeholder: 'mm/dd/yyyy',
+      placeholder: translate('date.placeholder'),
       defaultToday: props.data.defaultToday,
     };
   }
 
-  handleChange = (dt) => {
+  handleChange = dt => {
     let placeholder;
     if (dt && dt.target) {
-      placeholder = (dt && dt.target && dt.target.value === '') ? 'mm/dd/yyyy' : '';
-      const formattedDate = (dt.target.value) ? moment(dt.target.value).format('YYYY-MM-DD') : '';
+      placeholder = dt && dt.target && dt.target.value === '' ? translate('date.placeholder') : '';
+      const formattedDate = dt.target.value ? this.context.moment(dt.target.value).format(translate('date.year-first')) : '';
 
       this.setState({
         value: formattedDate,
@@ -267,7 +303,7 @@ class DatePicker extends React.Component {
       });
     } else {
       this.setState({
-        value: (dt) ? dt.format('MM/DD/YYYY') : '',
+        value: dt ? formatDate(dt, this.context.locale) : '',
         internalValue: dt,
         placeholder,
       });
@@ -276,8 +312,8 @@ class DatePicker extends React.Component {
 
   componentWillReceiveProps() {
     if (this.props.data.defaultToday && !this.state.defaultToday) {
-      this.state.value = moment().format('MM/DD/YYYY');
-      this.state.internalValue = moment(this.state.value);
+      this.state.value = this.context.moment().format(translate('date.full'));
+      this.state.internalValue = this.context.moment(this.state.value);
     } else if (!this.props.data.defaultToday && this.state.defaultToday) {
       this.state.value = '';
       this.state.internalValue = undefined;
@@ -300,7 +336,9 @@ class DatePicker extends React.Component {
     }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -308,37 +346,37 @@ class DatePicker extends React.Component {
         <div className="form-group">
           <ComponentLabel {...this.props} />
           <div>
-            { readOnly &&
-              <input type="text"
-                     name={props.name}
-                     ref={props.ref}
-                     readonly={readOnly}
-                     placeholder={this.state.placeholder}
-                     value={this.state.value}
-                     className="form-control" />
-            }
-            { iOS && !readOnly &&
-              <input type="date"
-                     name={props.name}
-                     ref={props.ref}
-                     onChange={this.handleChange}
-                     dateFormat="MM/DD/YYYY"
-                     placeholder={this.state.placeholder}
-                     value={this.state.value}
-                     className = "form-control" />
-            }
-            { !iOS && !readOnly &&
-              <ReactDatePicker
-                name={props.name}
-                ref={props.ref}
-                onChange={this.handleChange}
-                selected={this.state.internalValue}
-                todayButton={'Today'}
-                className = "form-control"
-                isClearable={true}
-                dateFormat="MM/DD/YYYY"
-                placeholderText='mm/dd/yyyy' />
-            }
+            {readOnly && (
+              <input type="text" name={props.name} ref={props.ref} readonly={readOnly} placeholder={this.state.placeholder} value={this.state.value} className="form-control" />
+            )}
+            {iOS &&
+              !readOnly && (
+                <input
+                  type="date"
+                  name={props.name}
+                  ref={props.ref}
+                  onChange={this.handleChange}
+                  dateFormat={translate('date.full')}
+                  placeholder={this.state.placeholder}
+                  value={this.state.value}
+                  className="form-control"
+                />
+            )}
+            {!iOS &&
+              !readOnly && (
+                <ReactDatePicker
+                  name={props.name}
+                  ref={props.ref}
+                  onChange={this.handleChange}
+                  selected={this.state.internalValue}
+                  todayButton={translate('form.today')}
+                  className="form-control"
+                  isClearable={true}
+                  dateFormat={translate('date.full')}
+                  placeholderText={translate('date.placeholder')}
+                  locale={this.context.locale}
+                />
+            )}
           </div>
         </div>
       </div>
@@ -367,7 +405,9 @@ class Dropdown extends React.Component {
     }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -375,9 +415,13 @@ class Dropdown extends React.Component {
         <div className="form-group">
           <ComponentLabel {...this.props} />
           <select {...props}>
-            {this.props.data.options.map((option) => {
+            {this.props.data.options.map(option => {
               const this_key = `preview_${option.key}`;
-              return <option value={option.value} key={this_key}>{option.text}</option>;
+              return (
+                <option value={option.value} key={this_key}>
+                  {option.text}
+                </option>
+              );
             })}
           </select>
         </div>
@@ -416,8 +460,16 @@ class Signature extends React.Component {
       pad_props.ref = this.canvas;
     }
 
+    const canvasProps = {
+      width: 500,
+      height: 200,
+      style: { display: 'block', border: '1px solid #000' },
+    };
+
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     let sourceDataURL;
     if (this.props.read_only === true && this.props.defaultValue && this.props.defaultValue.length > 0) {
@@ -429,10 +481,13 @@ class Signature extends React.Component {
         <ComponentHeader {...this.props} />
         <div className="form-group">
           <ComponentLabel {...this.props} />
-          {this.props.read_only === true && this.props.defaultValue && this.props.defaultValue.length > 0
-            ? (<div><img src={sourceDataURL} /></div>)
-            : (<SignaturePad {...pad_props} />)
-          }
+          {this.props.read_only === true && this.props.defaultValue && this.props.defaultValue.length > 0 ? (
+            <div>
+              <img src={sourceDataURL} />
+            </div>
+          ) : (
+            <SignatureCanvas {...pad_props} canvasProps={canvasProps} />
+          )}
           <input {...props} />
         </div>
       </div>
@@ -461,7 +516,7 @@ class Tags extends React.Component {
 
   // state = { value: this.props.defaultValue !== undefined ? this.props.defaultValue.split(',') : [] };
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({ value: e });
   };
 
@@ -476,7 +531,9 @@ class Tags extends React.Component {
     props.onChange = this.handleChange;
 
     props.options = options;
-    if (!this.props.mutable) { props.value = options[0].text; } // to show a sample of what tags looks like
+    if (!this.props.mutable) {
+      props.value = options[0].text;
+    } // to show a sample of what tags looks like
     if (this.props.mutable) {
       props.isDisabled = this.props.read_only;
       props.value = this.state.value;
@@ -484,7 +541,9 @@ class Tags extends React.Component {
     }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -507,17 +566,21 @@ class Checkboxes extends React.Component {
   render() {
     const self = this;
     let classNames = 'checkbox-label';
-    if (this.props.data.inline) { classNames += ' option-inline'; }
+    if (this.props.data.inline) {
+      classNames += ' option-inline';
+    }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />
         <div className="form-group">
           <ComponentLabel className="form-label" {...this.props} />
-          {this.props.data.options.map((option) => {
+          {this.props.data.options.map(option => {
             const this_key = `preview_${option.key}`;
             const props = {};
             props.name = `option_${option.key}`;
@@ -532,11 +595,15 @@ class Checkboxes extends React.Component {
             }
             return (
               <label className={classNames} key={this_key}>
-                <input ref={c => {
-                  if (c && self.props.mutable) {
-                    self.options[`child_ref_${option.key}`] = c;
-                  }
-                } } {...props} /> {option.text}
+                <input
+                  ref={c => {
+                    if (c && self.props.mutable) {
+                      self.options[`child_ref_${option.key}`] = c;
+                    }
+                  }}
+                  {...props}
+                />{' '}
+                {option.text}
               </label>
             );
           })}
@@ -555,17 +622,21 @@ class RadioButtons extends React.Component {
   render() {
     const self = this;
     let classNames = 'radio-label';
-    if (this.props.data.inline) { classNames += ' option-inline'; }
+    if (this.props.data.inline) {
+      classNames += ' option-inline';
+    }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />
         <div className="form-group">
           <ComponentLabel className="form-label" {...this.props} />
-          {this.props.data.options.map((option) => {
+          {this.props.data.options.map(option => {
             const this_key = `preview_${option.key}`;
             const props = {};
             props.name = self.props.data.field_name;
@@ -573,7 +644,7 @@ class RadioButtons extends React.Component {
             props.type = 'radio';
             props.value = option.value;
             if (self.props.mutable) {
-              props.defaultChecked = !!((self.props.defaultValue !== undefined && self.props.defaultValue.indexOf(option.key) > -1));
+              props.defaultChecked = !!(self.props.defaultValue !== undefined && self.props.defaultValue.indexOf(option.key) > -1);
             }
             if (this.props.read_only) {
               props.disabled = 'disabled';
@@ -581,11 +652,15 @@ class RadioButtons extends React.Component {
 
             return (
               <label className={classNames} key={this_key}>
-                <input ref={c => {
-                  if (c && self.props.mutable) {
-                    self.options[`child_ref_${option.key}`] = c;
-                  }
-                } } {...props} /> {option.text}
+                <input
+                  ref={c => {
+                    if (c && self.props.mutable) {
+                      self.options[`child_ref_${option.key}`] = c;
+                    }
+                  }}
+                  {...props}
+                />{' '}
+                {option.text}
               </label>
             );
           })}
@@ -597,22 +672,27 @@ class RadioButtons extends React.Component {
 
 class Image extends React.Component {
   render() {
-    const style = (this.props.data.center) ? { textAlign: 'center' } : null;
+    const style = this.props.data.center ? { textAlign: 'center' } : null;
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses} style={style}>
-        { !this.props.mutable &&
-          <HeaderBar parent={this.props.parent} editModeOn={this.props.editModeOn} data={this.props.data} onDestroy={this.props._onDestroy} onEdit={this.props.onEdit} required={this.props.data.required} />
-        }
-        { this.props.data.src &&
-          <img src={this.props.data.src} width={this.props.data.width} height={this.props.data.height} />
-        }
-        { !this.props.data.src &&
-          <div className="no-image">No Image</div>
-        }
+        {!this.props.mutable && (
+          <HeaderBar
+            parent={this.props.parent}
+            editModeOn={this.props.editModeOn}
+            data={this.props.data}
+            onDestroy={this.props._onDestroy}
+            onEdit={this.props.onEdit}
+            required={this.props.data.required}
+          />
+        )}
+        {this.props.data.src && <img src={this.props.data.src} width={this.props.data.width} height={this.props.data.height} />}
+        {!this.props.data.src && <div className="no-image">{translate('form.no-image')}</div>}
       </div>
     );
   }
@@ -630,14 +710,16 @@ class Rating extends React.Component {
     props.ratingAmount = 5;
 
     if (this.props.mutable) {
-      props.rating = (this.props.defaultValue !== undefined) ? parseFloat(this.props.defaultValue, 10) : 0;
+      props.rating = this.props.defaultValue !== undefined ? parseFloat(this.props.defaultValue, 10) : 0;
       props.editing = true;
       props.disabled = this.props.read_only;
       props.ref = this.inputField;
     }
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -654,13 +736,17 @@ class Rating extends React.Component {
 class HyperLink extends React.Component {
   render() {
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />
         <div className="form-group">
-          <a target="_blank" href={this.props.data.href}>{this.props.data.content}</a>
+          <a target="_blank" href={this.props.data.href}>
+            {this.props.data.content}
+          </a>
         </div>
       </div>
     );
@@ -670,7 +756,9 @@ class HyperLink extends React.Component {
 class Download extends React.Component {
   render() {
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -689,11 +777,11 @@ class Camera extends React.Component {
     this.state = { img: null };
   }
 
-  displayImage = (e) => {
+  displayImage = e => {
     const self = this;
     const target = e.target;
-    let file; let
-      reader;
+    let file;
+    let reader;
 
     if (target.files && target.files.length) {
       file = target.files[0];
@@ -719,7 +807,9 @@ class Camera extends React.Component {
     let baseClasses = 'SortableItem rfb-item';
     const name = this.props.data.field_name;
     const fileInputStyle = this.state.img ? { display: 'none' } : null;
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
     let sourceDataURL;
     if (this.props.read_only === true && this.props.defaultValue && this.props.defaultValue.length > 0) {
       sourceDataURL = `data:image/png;base64,${this.props.defaultValue}`;
@@ -729,28 +819,33 @@ class Camera extends React.Component {
         <ComponentHeader {...this.props} />
         <div className="form-group">
           <ComponentLabel {...this.props} />
-          {this.props.read_only === true && this.props.defaultValue && this.props.defaultValue.length > 0
-            ? (<div><img src={sourceDataURL} /></div>)
-            : (<div className="image-upload-container">
-
-            <div style={fileInputStyle}>
-              <input name={name} type="file" accept="image/*" capture="camera" className="image-upload" onChange={this.displayImage} />
-              <div className="image-upload-control">
-                <div className="btn btn-default btn-school"><i className="fa fa-camera"></i> Upload Photo</div>
-                <p>Select an image from your computer or device.</p>
-              </div>
+          {this.props.read_only === true && this.props.defaultValue && this.props.defaultValue.length > 0 ? (
+            <div>
+              <img src={sourceDataURL} />
             </div>
-
-            { this.state.img &&
-              <div>
-                <img src={ this.state.img } height="100" className="image-upload-preview" /><br />
-                <div className="btn btn-school btn-image-clear" onClick={this.clearImage}>
-                  <i className="fa fa-times"></i> Clear Photo
+          ) : (
+            <div className="image-upload-container">
+              <div style={fileInputStyle}>
+                <input name={name} type="file" accept="image/*" capture="camera" className="image-upload" onChange={this.displayImage} />
+                <div className="image-upload-control">
+                  <div className="btn btn-default btn-school">
+                    <i className="fa fa-camera" /> {translate('form.upload-image')}
+                  </div>
+                  <p>{translate('form.select-image')}</p>
                 </div>
               </div>
-            }
-          </div>)
-        }
+
+              {this.state.img && (
+                <div>
+                  <img src={this.state.img} height="100" className="image-upload-preview" />
+                  <br />
+                  <div className="btn btn-school btn-image-clear" onClick={this.clearImage}>
+                    <i className="fa fa-times" /> {translate('form.clear-image')}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -766,12 +861,12 @@ class Range extends React.Component {
     };
   }
 
-  changeValue = (e) => {
+  changeValue = e => {
     const { target } = e;
     this.setState({
       value: target.value,
     });
-  }
+  };
 
   render() {
     const props = {};
@@ -802,15 +897,21 @@ class Range extends React.Component {
     const visible_marks = datalist.map((d, idx) => {
       const option_props = {};
       let w = oneBig;
-      if (idx === 0 || idx === datalist.length - 1) { w = oneBig / 2; }
+      if (idx === 0 || idx === datalist.length - 1) {
+        w = oneBig / 2;
+      }
       option_props.key = `${props.list}_label_${idx}`;
       option_props.style = { width: `${w}%` };
-      if (idx === datalist.length - 1) { option_props.style = { width: `${w}%`, textAlign: 'right' }; }
+      if (idx === datalist.length - 1) {
+        option_props.style = { width: `${w}%`, textAlign: 'right' };
+      }
       return <label {...option_props}>{d}</label>;
     });
 
     let baseClasses = 'SortableItem rfb-item';
-    if (this.props.data.pageBreakBefore) { baseClasses += ' alwaysbreak'; }
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += ' alwaysbreak';
+    }
 
     return (
       <div className={baseClasses}>
@@ -824,13 +925,9 @@ class Range extends React.Component {
             </div>
             <ReactBootstrapSlider {...props} />
           </div>
-          <div className="visible_marks">
-            {visible_marks}
-          </div>
+          <div className="visible_marks">{visible_marks}</div>
           <input name={name} value={this.state.value} type="hidden" />
-          <datalist id={props.list}>
-            {_datalist}
-          </datalist>
+          <datalist id={props.list}>{_datalist}</datalist>
         </div>
       </div>
     );

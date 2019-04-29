@@ -110,13 +110,7 @@ const saveUrl = '/api/formdata';
 //   post(saveUrl, data);
 // }
 
-ReactDOM.render(
-  <FormBuilder.ReactFormBuilder variables={variables}
-    url={url}
-    saveUrl={saveUrl}
-  />,
-  document.getElementById('form-builder'),
-);
+ReactDOM.render(<FormBuilder.ReactFormBuilder variables={variables} url={url} saveUrl={saveUrl} locale="de" />, document.getElementById('form-builder'));
 
 // ReactDOM.render(
 //   <FormBuilder.ReactFormBuilder variables={variables}
@@ -126,7 +120,4 @@ ReactDOM.render(
 //   document.getElementById('form-builder')
 // )
 
-ReactDOM.render(
-  <DemoBar variables={variables} />,
-  document.getElementById('demo-bar'),
-);
+ReactDOM.render(<DemoBar variables={variables} />, document.getElementById('demo-bar'));

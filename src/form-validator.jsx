@@ -1,9 +1,10 @@
 /**
-  * <FormValidator />
-  */
+ * <FormValidator />
+ */
 
 import React from 'react';
 import xss from 'xss';
+import translate from 'counterpart';
 
 const myxss = new xss.FilterXSS({
   whiteList: {
@@ -33,7 +34,7 @@ export default class FormValidator extends React.Component {
   }
 
   componentWillMount() {
-    this.subscription = this.props.emitter.addListener('formValidation', (errors) => {
+    this.subscription = this.props.emitter.addListener('formValidation', errors => {
       this.setState({ errors });
     });
   }
@@ -52,19 +53,19 @@ export default class FormValidator extends React.Component {
 
     return (
       <div>
-        { this.state.errors.length > 0 &&
+        {this.state.errors.length > 0 && (
           <div className="alert alert-danger validation-error">
             <div className="clearfix">
-              <i className="fa fa-exclamation-triangle pull-left"></i>
-              <ul className="pull-left">
-                {errors}
-              </ul>
+              <i className="fa fa-exclamation-triangle pull-left" />
+              <ul className="pull-left">{errors}</ul>
             </div>
             <div className="clearfix">
-              <a className="pull-right btn btn-default btn-sm btn-danger" onClick={this.dismissModal.bind(this)}>Dismiss</a>
+              <a className="pull-right btn btn-default btn-sm btn-danger" onClick={this.dismissModal.bind(this)}>
+                {translate('error.dismiss')}
+              </a>
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

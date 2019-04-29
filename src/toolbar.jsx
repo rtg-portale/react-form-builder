@@ -1,8 +1,9 @@
 /**
-  * <Toolbar />
-  */
+ * <Toolbar />
+ */
 
 import React from 'react';
+import translate from 'counterpart';
 import ToolbarItem from './toolbar-draggable-item';
 import ID from './UUID';
 import store from './stores/store';
@@ -11,7 +12,7 @@ export default class Toolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    const items = (this.props.items) ? this.props.items : this._defaultItems();
+    const items = this.props.items ? this.props.items : this._defaultItems();
     this.state = {
       items,
     };
@@ -21,29 +22,29 @@ export default class Toolbar extends React.Component {
   static _defaultItemOptions(element) {
     switch (element) {
       case 'Dropdown':
-        return [
-          { value: '', text: '', key: `dropdown_option_${ID.uuid()}` },
-          { value: '', text: '', key: `dropdown_option_${ID.uuid()}` },
-          { value: '', text: '', key: `dropdown_option_${ID.uuid()}` },
-        ];
+        return [...Array(3).keys()].map(n => ({
+          value: translate('form.placeholder-value-x', { number: n + 1 }),
+          text: translate('form.placeholder-option-x', { number: n + 1 }),
+          key: `dropdown_option_${ID.uuid()}`,
+        }));
       case 'Tags':
-        return [
-          { value: 'place_holder_tag_1', text: 'Place holder tag 1', key: `tags_option_${ID.uuid()}` },
-          { value: 'place_holder_tag_2', text: 'Place holder tag 2', key: `tags_option_${ID.uuid()}` },
-          { value: 'place_holder_tag_3', text: 'Place holder tag 3', key: `tags_option_${ID.uuid()}` },
-        ];
+        return [...Array(3).keys()].map(n => ({
+          value: translate('form.placeholder-value-x', { number: n + 1 }),
+          text: translate('form.placeholder-tag-x', { number: n + 1 }),
+          key: `tags_option_${ID.uuid()}`,
+        }));
       case 'Checkboxes':
-        return [
-          { value: 'place_holder_option_1', text: 'Place holder option 1', key: `checkboxes_option_${ID.uuid()}` },
-          { value: 'place_holder_option_2', text: 'Place holder option 2', key: `checkboxes_option_${ID.uuid()}` },
-          { value: 'place_holder_option_3', text: 'Place holder option 3', key: `checkboxes_option_${ID.uuid()}` },
-        ];
+        return [...Array(3).keys()].map(n => ({
+          value: translate('form.placeholder-value-x', { number: n + 1 }),
+          text: translate('form.placeholder-option-x', { number: n + 1 }),
+          key: `checkboxes_option_${ID.uuid()}`,
+        }));
       case 'RadioButtons':
-        return [
-          { value: 'place_holder_option_1', text: 'Place holder option 1', key: `radiobuttons_option_${ID.uuid()}` },
-          { value: 'place_holder_option_2', text: 'Place holder option 2', key: `radiobuttons_option_${ID.uuid()}` },
-          { value: 'place_holder_option_3', text: 'Place holder option 3', key: `radiobuttons_option_${ID.uuid()}` },
-        ];
+        return [...Array(3).keys()].map(n => ({
+          value: translate('form.placeholder-value-x', { number: n + 1 }),
+          text: translate('form.placeholder-option-x', { number: n + 1 }),
+          key: `radiobuttons_option_${ID.uuid()}`,
+        }));
       default:
         return [];
     }
@@ -53,161 +54,161 @@ export default class Toolbar extends React.Component {
     return [
       {
         key: 'Header',
-        name: 'Header Text',
+        name: translate('toolbar.header-text'),
         icon: 'fa fa-header',
         static: true,
-        content: 'Placeholder Text...',
+        content: translate('form.placeholder-text'),
       },
       {
         key: 'Label',
-        name: 'Label',
+        name: translate('toolbar.label'),
         static: true,
         icon: 'fa fa-font',
-        content: 'Placeholder Text...',
+        content: translate('form.placeholder-text'),
       },
       {
         key: 'Paragraph',
-        name: 'Paragraph',
+        name: translate('toolbar.paragraph'),
         static: true,
         icon: 'fa fa-paragraph',
-        content: 'Placeholder Text...',
+        content: translate('form.placeholder-text'),
       },
       {
         key: 'LineBreak',
-        name: 'Line Break',
+        name: translate('toolbar.line-break'),
         static: true,
         icon: 'fa fa-arrows-h',
       },
       {
         key: 'Dropdown',
         canHaveAnswer: true,
-        name: 'Dropdown',
+        name: translate('toolbar.dropdown'),
         icon: 'fa fa-caret-square-o-down',
-        label: 'Placeholder Label',
+        label: translate('form.placeholder-label'),
         field_name: 'dropdown_',
         options: [],
       },
       {
         key: 'Tags',
         canHaveAnswer: true,
-        name: 'Tags',
+        name: translate('toolbar.tags'),
         icon: 'fa fa-tags',
-        label: 'Placeholder Label',
+        label: translate('form.placeholder-label'),
         field_name: 'tags_',
         options: [],
       },
       {
         key: 'Checkboxes',
         canHaveAnswer: true,
-        name: 'Checkboxes',
+        name: translate('toolbar.checkboxes'),
         icon: 'fa fa-check-square-o',
-        label: 'Placeholder Label',
+        label: translate('form.placeholder-label'),
         field_name: 'checkboxes_',
         options: [],
       },
       {
         key: 'RadioButtons',
         canHaveAnswer: true,
-        name: 'Multiple Choice',
+        name: translate('toolbar.multiple-choice'),
         icon: 'fa fa-dot-circle-o',
-        label: 'Placeholder Label',
+        label: translate('form.placeholder-label'),
         field_name: 'radio_buttons_',
         options: [],
       },
       {
         key: 'TextInput',
         canHaveAnswer: true,
-        name: 'Text Input',
-        label: 'Placeholder Label',
+        name: translate('toolbar.text-input'),
+        label: translate('form.placeholder-label'),
         icon: 'fa fa-font',
         field_name: 'text_input_',
       },
       {
-        key: 'NumberInput',
-        canHaveAnswer: true,
-        name: 'Number Input',
-        label: 'Placeholder Label',
-        icon: 'fa fa-plus',
-        field_name: 'number_input_',
-      },
-      {
         key: 'TextArea',
         canHaveAnswer: true,
-        name: 'Multi-line Input',
-        label: 'Placeholder Label',
+        name: translate('toolbar.multi-line-input'),
+        label: translate('form.placeholder-label'),
         icon: 'fa fa-text-height',
         field_name: 'text_area_',
       },
       {
+        key: 'NumberInput',
+        canHaveAnswer: true,
+        name: translate('toolbar.number-input'),
+        label: translate('form.placeholder-label'),
+        icon: 'fa fa-plus',
+        field_name: 'number_input_',
+      },
+      {
+        key: 'Range',
+        name: translate('toolbar.range'),
+        icon: 'fa fa-sliders',
+        label: translate('form.placeholder-label'),
+        field_name: 'range_',
+        step: 1,
+        default_value: 3,
+        min_value: 1,
+        max_value: 5,
+        min_label: translate('form.placeholder-min'),
+        max_label: translate('form.placeholder-max'),
+      },
+      {
+        key: 'Rating',
+        canHaveAnswer: true,
+        name: translate('toolbar.rating'),
+        label: translate('form.placeholder-label'),
+        icon: 'fa fa-star',
+        field_name: 'rating_',
+      },
+      {
         key: 'Image',
-        name: 'Image',
+        name: translate('toolbar.image'),
         label: '',
         icon: 'fa fa-photo',
         field_name: 'image_',
         src: '',
       },
       {
-        key: 'Rating',
-        canHaveAnswer: true,
-        name: 'Rating',
-        label: 'Placeholder Label',
-        icon: 'fa fa-star',
-        field_name: 'rating_',
-      },
-      {
-        key: 'DatePicker',
-        canDefaultToday: true,
-        canReadOnly: true,
-        name: 'Date',
-        icon: 'fa fa-calendar',
-        label: 'Placeholder Label',
-        field_name: 'date_picker_',
-      },
-      {
-        key: 'Signature',
-        canReadOnly: true,
-        name: 'Signature',
-        icon: 'fa fa-pencil-square-o',
-        label: 'Signature',
-        field_name: 'signature_',
-      },
-      {
-        key: 'HyperLink',
-        name: 'Web site',
-        icon: 'fa fa-link',
-        static: true,
-        content: 'Placeholder Web site link ...',
-        href: 'http://www.example.com',
-      },
-      {
         key: 'Download',
-        name: 'File Attachment',
+        name: translate('toolbar.file-attachment'),
         icon: 'fa fa-file',
         static: true,
-        content: 'Placeholder file name ...',
+        content: translate('form.placeholder-file'),
         field_name: 'download_',
         file_path: '',
         _href: '',
       },
       {
-        key: 'Range',
-        name: 'Range',
-        icon: 'fa fa-sliders',
-        label: 'Placeholder Label',
-        field_name: 'range_',
-        step: 1,
-        default_value: 3,
-        min_value: 1,
-        max_value: 5,
-        min_label: 'Easy',
-        max_label: 'Difficult',
+        key: 'Camera',
+        name: translate('toolbar.camera'),
+        icon: 'fa fa-camera',
+        label: translate('form.placeholder-label'),
+        field_name: 'camera_',
       },
       {
-        key: 'Camera',
-        name: 'Camera',
-        icon: 'fa fa-camera',
-        label: 'Placeholder Label',
-        field_name: 'camera_',
+        key: 'DatePicker',
+        canDefaultToday: true,
+        canReadOnly: true,
+        name: translate('toolbar.date'),
+        icon: 'fa fa-calendar',
+        label: translate('form.placeholder-label'),
+        field_name: 'date_picker_',
+      },
+      {
+        key: 'HyperLink',
+        name: translate('toolbar.web-site'),
+        icon: 'fa fa-link',
+        static: true,
+        content: translate('form.placeholder-web-site'),
+        href: translate('form.placeholder-href'),
+      },
+      {
+        key: 'Signature',
+        canReadOnly: true,
+        name: translate('toolbar.signature'),
+        icon: 'fa fa-pencil-square-o',
+        label: translate('toolbar.signature'),
+        field_name: 'signature_',
       },
     ];
   }
@@ -226,15 +227,25 @@ export default class Toolbar extends React.Component {
       elementOptions.italic = false;
     }
 
-    if (item.canHaveAnswer) { elementOptions.canHaveAnswer = item.canHaveAnswer; }
+    if (item.canHaveAnswer) {
+      elementOptions.canHaveAnswer = item.canHaveAnswer;
+    }
 
-    if (item.canReadOnly) { elementOptions.readOnly = false; }
+    if (item.canReadOnly) {
+      elementOptions.readOnly = false;
+    }
 
-    if (item.canDefaultToday) { elementOptions.defaultToday = false; }
+    if (item.canDefaultToday) {
+      elementOptions.defaultToday = false;
+    }
 
-    if (item.content) { elementOptions.content = item.content; }
+    if (item.content) {
+      elementOptions.content = item.content;
+    }
 
-    if (item.href) { elementOptions.href = item.href; }
+    if (item.href) {
+      elementOptions.href = item.href;
+    }
 
     if (item.key === 'Image') {
       elementOptions.src = item.src;
@@ -254,11 +265,17 @@ export default class Toolbar extends React.Component {
       elementOptions.max_label = item.max_label;
     }
 
-    if (item.defaultValue) { elementOptions.defaultValue = item.defaultValue; }
+    if (item.defaultValue) {
+      elementOptions.defaultValue = item.defaultValue;
+    }
 
-    if (item.field_name) { elementOptions.field_name = item.field_name + ID.uuid(); }
+    if (item.field_name) {
+      elementOptions.field_name = item.field_name + ID.uuid();
+    }
 
-    if (item.label) { elementOptions.label = item.label; }
+    if (item.label) {
+      elementOptions.label = item.label;
+    }
 
     if (item.options) {
       elementOptions.options = Toolbar._defaultItemOptions(elementOptions.element);
@@ -275,11 +292,11 @@ export default class Toolbar extends React.Component {
   render() {
     return (
       <div className="react-form-builder-toolbar pull-right">
-        <h4>Toolbox</h4>
+        <h4>{translate('toolbar.heading')}</h4>
         <ul>
-          {
-            this.state.items.map((item) => (<ToolbarItem data={item} key={item.key} onClick={this._onClick.bind(this, item)} onCreate={this.create} />))
-          }
+          {this.state.items.map(item => (
+            <ToolbarItem data={item} key={item.key} onClick={this._onClick.bind(this, item)} onCreate={this.create} />
+          ))}
         </ul>
       </div>
     );

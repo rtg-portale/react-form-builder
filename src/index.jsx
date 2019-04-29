@@ -1,6 +1,6 @@
 /**
-  * <ReactFormBuilder />
-*/
+ * <ReactFormBuilder />
+ */
 
 import React from 'react';
 import { DragDropContext } from 'react-dnd';
@@ -9,6 +9,7 @@ import Preview from './preview';
 import Toolbar from './toolbar';
 import ReactFormGenerator from './form';
 import store from './stores/store';
+import { LocaleContextProvider } from './localeContext';
 
 class ReactFormBuilder extends React.Component {
   constructor(props) {
@@ -41,10 +42,13 @@ class ReactFormBuilder extends React.Component {
 
   render() {
     const toolbarProps = {};
-    if (this.props.toolbarItems) { toolbarProps.items = this.props.toolbarItems; }
+    if (this.props.toolbarItems) {
+      toolbarProps.items = this.props.toolbarItems;
+    }
+
     return (
-       <div>
-         {/* <div>
+      <div>
+        {/* <div>
            <p>
              It is easy to implement a sortable interface with React DnD. Just make
              the same component both a drag source and a drop target, and reorder
@@ -52,24 +56,28 @@ class ReactFormBuilder extends React.Component {
            </p>
            <Container />
          </div> */}
-         <div className="react-form-builder clearfix">
-           <div>
-             <Preview files={this.props.files}
-                 manualEditModeOff={this.manualEditModeOff.bind(this)}
-                 parent={this}
-                 data={this.props.data}
-                 url={this.props.url}
-                 saveUrl={this.props.saveUrl}
-                 onLoad={this.props.onLoad}
-                 onPost={this.props.onPost}
-                 editModeOn={this.editModeOn}
-                 editMode={this.state.editMode}
-                 variables={this.props.variables}
-                 editElement={this.state.editElement} />
-             <Toolbar {...this.props.toolbarItems} />
-           </div>
-         </div>
-       </div>
+        <div className="react-form-builder clearfix">
+          <div>
+            <LocaleContextProvider locale={this.props.locale || 'en'}>
+              <Preview
+                files={this.props.files}
+                manualEditModeOff={this.manualEditModeOff.bind(this)}
+                parent={this}
+                data={this.props.data}
+                url={this.props.url}
+                saveUrl={this.props.saveUrl}
+                onLoad={this.props.onLoad}
+                onPost={this.props.onPost}
+                editModeOn={this.editModeOn}
+                editMode={this.state.editMode}
+                variables={this.props.variables}
+                editElement={this.state.editElement}
+              />
+              <Toolbar {...this.props.toolbarItems} />
+            </LocaleContextProvider>
+          </div>
+        </div>
+      </div>
     );
   }
 }
